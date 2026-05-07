@@ -25,4 +25,19 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+/**
+ * Tabela de colecao de figurinhas do usuario
+ * Rastreia quais figurinhas o usuario tem, repetidas ou faltam
+ */
+export const userStickers = mysqlTable("userStickers", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  countryCode: varchar("countryCode", { length: 3 }).notNull(), // MEX, RSA, etc
+  figurinhaNumber: int("figurinhaNumber").notNull(), // 0-20
+  status: mysqlEnum("status", ["T", "R", "F"]).notNull(), // T=Tenho, R=Repetida, F=Falta
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type UserSticker = typeof userStickers.$inferSelect;
+export type InsertUserSticker = typeof userStickers.$inferInsert;

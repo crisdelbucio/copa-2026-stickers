@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, userStickers, InsertUserSticker, UserSticker } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -90,3 +90,83 @@ export async function getUserByOpenId(openId: string) {
 }
 
 // TODO: add feature queries here as your schema grows.
+
+// Sticker collection queries
+export async function getUserStickers(userId: number): Promise<UserSticker[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get stickers: database not available");
+    return [];
+  }
+
+  return db.select().from(userStickers).where(eq(userStickers.userId, userId));
+}
+
+export async function getUserStickersByCountry(userId: number, countryCode: string): Promise<UserSticker[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get stickers: database not available");
+    return [];
+  }
+
+  return db
+    .select()
+    .from(userStickers)
+    .where(and(eq(userStickers.userId, userId), eq(userStickers.countryCode, countryCode)));
+}
+
+export async function upsertUserSticker(data: InsertUserSticker): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot upsert sticker: database not available");
+    return;
+  }
+
+  try {
+    await db
+      .insert(userStickers)
+      .values(data)
+      .onDuplicateKeyUpdate({
+        set: {
+          status: data.status,
+          updatedAt: new Date(),
+        },
+      });
+  } catch (error) {
+    console.error("[Database] Failed to upsert sticker:", error);
+    throw error;
+  }
+}
+
+export async function deleteUserSticker(userId: number, countryCode: string, figurinhaNumber: number): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete sticker: database not available");
+    return;
+  }
+
+  try {
+    await db
+      .delete(userStickers)
+      .where(
+        and(
+          eq(userStickers.userId, userId),
+          eq(userStickers.countryCode, countryCode),
+          eq(userStickers.figurinhaNumber, figurinhaNumber)
+        )
+      );
+  } catch (error) {
+    console.error("[Database] Failed to delete sticker:", error);
+    throw error;
+  }
+}
+
+export async function getUserStickerStats(userId: number): Promise<{ total: number; tenho: number; repetidas: number; faltam: number }> {
+  const stickers = await getUserStickers(userId);
+  const total = 48 * 21; // 48 countries * 21 stickers each
+  const tenho = stickers.filter((s) => s.status === "T").length;
+  const repetidas = stickers.filter((s) => s.status === "R").length;
+  const faltam = stickers.filter((s) => s.status === "F").length;
+
+  return { total, tenho, repetidas, faltam };
+}
