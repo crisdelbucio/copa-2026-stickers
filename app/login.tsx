@@ -3,7 +3,7 @@ import { ScreenContainer } from "@/components/screen-container";
 import { useColors } from "@/hooks/use-colors";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Image } from "react-native";
 
 export default function LoginScreen() {
   const { user, isAuthenticated, loading } = useAuth();
@@ -28,9 +28,17 @@ export default function LoginScreen() {
     <ScreenContainer className="bg-background">
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="flex-1">
         <View className="flex-1 items-center justify-center px-6 gap-8">
+          {/* Avatar */}
+          <View className="items-center">
+            <Image
+              source={require("@/assets/images/avatar-clown.png")}
+              style={{ width: 200, height: 200 }}
+              resizeMode="contain"
+            />
+          </View>
+
           {/* Header */}
           <View className="items-center gap-4">
-            <Text className="text-5xl">⚽</Text>
             <Text className="text-3xl font-bold text-foreground text-center">
               Figurinhas Copa 2026
             </Text>

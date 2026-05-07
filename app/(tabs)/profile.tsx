@@ -1,4 +1,4 @@
-import { ScrollView, Text, View, TouchableOpacity, Alert } from "react-native";
+import { ScrollView, Text, View, TouchableOpacity, Alert, Image } from "react-native";
 import { ScreenContainer } from "@/components/screen-container";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "expo-router";
@@ -38,9 +38,11 @@ export default function ProfileScreen() {
           {/* User Info */}
           <View className="bg-surface rounded-2xl p-6 gap-4">
             <View className="items-center gap-2">
-              <View className="w-16 h-16 rounded-full bg-primary/20 items-center justify-center">
-                <Text className="text-3xl">👤</Text>
-              </View>
+              <Image
+                source={require("@/assets/images/avatar-clown.png")}
+                style={{ width: 120, height: 120 }}
+                resizeMode="contain"
+              />
               <Text className="text-2xl font-bold text-foreground">{user?.name || "Colecionador"}</Text>
               <Text className="text-sm text-muted">{user?.email}</Text>
             </View>

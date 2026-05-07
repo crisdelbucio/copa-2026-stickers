@@ -73,3 +73,9 @@
 - [ ] Build iOS IPA
 - [ ] Publicar na Play Store
 - [ ] Publicar na App Store
+
+## Atualizações Solicitadas
+- [x] Adicionar avatar do palhaço festivo
+- [x] Mudar cor primária de azul para verde
+- [x] Atualizar tela de login com novo avatar
+- [x] Atualizar tela de perfil com novo avatar
