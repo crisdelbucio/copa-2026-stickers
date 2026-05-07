@@ -1,4 +1,4 @@
-import { ScrollView, Text, View, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
+import { ScrollView, Text, View, TouchableOpacity, FlatList, ActivityIndicator, useWindowDimensions } from "react-native";
 import { ScreenContainer } from "@/components/screen-container";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { STICKERS_DATA, FIGURINHAS_PER_COUNTRY } from "@/lib/countries";
@@ -10,7 +10,10 @@ export default function GroupDetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const colors = useColors();
+  const { width } = useWindowDimensions();
   const [expandedCountry, setExpandedCountry] = useState<string | null>(null);
+
+  const isDesktop = width > 1024;
 
   const stickersQuery = trpc.stickers.list.useQuery();
   const upsertMutation = trpc.stickers.upsert.useMutation();
@@ -96,24 +99,24 @@ export default function GroupDetailScreen() {
     return (
       <View className="gap-3 mb-4">
         <TouchableOpacity
-          className="bg-surface rounded-2xl p-4 gap-3 active:opacity-70"
+          className="bg-surface rounded-2xl p-6 gap-3 active:opacity-70"
           onPress={() => setExpandedCountry(isExpanded ? null : country.code)}
         >
           <View className="flex-row items-center justify-between">
             <View className="gap-1 flex-1">
-              <Text className="text-lg font-semibold text-foreground">{country.name}</Text>
-              <Text className="text-sm text-muted">{country.code}</Text>
+              <Text className="text-xl font-semibold text-foreground">{country.name}</Text>
+              <Text className="text-base text-muted">{country.code}</Text>
             </View>
             <View className="items-end gap-1">
-              <Text className="text-lg font-bold text-primary">
+              <Text className="text-2xl font-bold text-primary">
                 {Math.round((stats.tenho / stats.total) * 100)}%
               </Text>
-              <Text className="text-xs text-muted">{stats.tenho}/{stats.total}</Text>
+              <Text className="text-sm text-muted">{stats.tenho}/{stats.total}</Text>
             </View>
           </View>
 
           {/* Progress Bar */}
-          <View className="h-2 bg-border rounded-full overflow-hidden">
+          <View className="h-3 bg-border rounded-full overflow-hidden">
             <View
               className="h-full bg-primary rounded-full"
               style={{ width: `${(stats.tenho / stats.total) * 100}%` }}
@@ -123,17 +126,24 @@ export default function GroupDetailScreen() {
 
         {/* Figurinhas Grid */}
         {isExpanded && (
-          <View className="bg-surface rounded-2xl p-4 gap-3">
-            <View className="flex-row flex-wrap gap-2">
+          <View className="bg-surface rounded-2xl p-6 gap-4">
+            <View className="flex-row flex-wrap gap-3">
               {Array.from({ length: FIGURINHAS_PER_COUNTRY }).map((_, index) => {
                 const status = getStickerStatus(country.code, index);
                 const isLoading =
                   upsertMutation.isPending || deleteMutation.isPending;
 
+                // Tamanho maior para desktop
+                const buttonSize = isDesktop ? 48 : 48;
+
                 return (
                   <TouchableOpacity
                     key={index}
-                    className={`w-12 h-12 rounded-lg items-center justify-center ${getStatusColor(
+                    style={{
+                      width: buttonSize,
+                      height: buttonSize,
+                    }}
+                    className={`rounded-lg items-center justify-center ${getStatusColor(
                       status
                     )} active:opacity-70`}
                     onPress={() => handleToggleFigurinha(country.code, index)}
@@ -158,19 +168,19 @@ export default function GroupDetailScreen() {
             </View>
 
             {/* Legend */}
-            <View className="border-t border-border pt-3 gap-2">
-              <View className="flex-row gap-4">
+            <View className="border-t border-border pt-4 gap-3">
+              <View className="flex-row gap-6 flex-wrap">
                 <View className="flex-row items-center gap-2">
-                  <View className="w-4 h-4 rounded bg-success" />
-                  <Text className="text-xs text-muted">Tenho</Text>
+                  <View className="w-5 h-5 rounded bg-success" />
+                  <Text className="text-sm text-muted">Tenho (T)</Text>
                 </View>
                 <View className="flex-row items-center gap-2">
-                  <View className="w-4 h-4 rounded bg-warning" />
-                  <Text className="text-xs text-muted">Repetida</Text>
+                  <View className="w-5 h-5 rounded bg-warning" />
+                  <Text className="text-sm text-muted">Repetida (R)</Text>
                 </View>
                 <View className="flex-row items-center gap-2">
-                  <View className="w-4 h-4 rounded bg-error" />
-                  <Text className="text-xs text-muted">Falta</Text>
+                  <View className="w-5 h-5 rounded bg-error" />
+                  <Text className="text-sm text-muted">Falta (F)</Text>
                 </View>
               </View>
             </View>
@@ -182,18 +192,18 @@ export default function GroupDetailScreen() {
 
   return (
     <ScreenContainer className="bg-background">
-      <View className="flex-row items-center gap-4 mb-6">
-        <TouchableOpacity onPress={() => router.back()} className="p-2 active:opacity-70">
-          <Text className="text-2xl">←</Text>
-        </TouchableOpacity>
-        <View>
-          <Text className="text-2xl font-bold text-foreground">Grupo {groupId}</Text>
-          <Text className="text-sm text-muted">{countries.length} países</Text>
-        </View>
-      </View>
-
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="flex-1">
-        <View className="pb-8">
+        <View className="pb-8" style={{ paddingHorizontal: isDesktop ? 32 : 0 }}>
+          <View className="flex-row items-center gap-4 mb-8">
+            <TouchableOpacity onPress={() => router.back()} className="p-2 active:opacity-70">
+              <Text className="text-3xl">←</Text>
+            </TouchableOpacity>
+            <View>
+              <Text className="text-3xl font-bold text-foreground">Grupo {groupId}</Text>
+              <Text className="text-base text-muted">{countries.length} países</Text>
+            </View>
+          </View>
+
           <FlatList
             data={countries}
             keyExtractor={(item) => item.code}

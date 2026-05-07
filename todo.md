@@ -82,3 +82,10 @@
 
 ## Logotipo KIMANA
 - [x] Adicionar logotipo KIMANA abaixo do avatar na tela de login
+
+## Otimização para Web
+- [x] Ajustar layout para desktop (grid de figurinhas maior)
+- [x] Otimizar navegação para mouse e teclado
+- [x] Melhorar responsividade para diferentes tamanhos de tela
+- [ ] Adicionar suporte a drag-and-drop para figurinhas
+- [ ] Testar em navegadores desktop
