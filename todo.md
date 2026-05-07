@@ -98,3 +98,6 @@
 - [ ] Conectar repositório à Vercel
 - [ ] Configurar domínio gratuito da Vercel
 - [ ] Testar site publicado
+
+## Personalização da Home
+- [x] Adicionar logo KIMANA na home com o palhaço

@@ -23,22 +23,28 @@ export default function HomeScreen() {
           className="gap-8 pb-8"
           style={{ paddingHorizontal: isDesktop ? 48 : 24 }}
         >
-          {/* Header */}
-          <View className="gap-4">
-            <View className="flex-row items-center justify-between">
-              <View className="gap-2 flex-1">
-                <Text className="text-4xl font-bold text-foreground">
-                  Bem-vindo, {user?.name?.split(" ")[0] || "Colecionador"}!
-                </Text>
-                <Text className="text-lg text-muted">
-                  Acompanhe seu progresso na Copa 2026
-                </Text>
-              </View>
+          {/* Header com Logo e Palhaço */}
+          <View className="gap-6 items-center">
+            <View className="flex-row items-center justify-center gap-4">
               <Image
                 source={require("@/assets/images/avatar-clown.png")}
-                style={{ width: 80, height: 80 }}
+                style={{ width: 100, height: 100 }}
                 resizeMode="contain"
               />
+              <Image
+                source={require("@/assets/images/logo-kimana.png")}
+                style={{ width: 180, height: 60 }}
+                resizeMode="contain"
+              />
+            </View>
+
+            <View className="items-center gap-2">
+              <Text className="text-3xl font-bold text-foreground text-center">
+                Bem-vindo, {user?.name?.split(" ")[0] || "Colecionador"}!
+              </Text>
+              <Text className="text-lg text-muted text-center">
+                Acompanhe seu progresso na Copa 2026
+              </Text>
             </View>
           </View>
 
@@ -88,7 +94,7 @@ export default function HomeScreen() {
               style={{
                 width: isDesktop ? "48%" : "100%",
               }}
-              className="bg-surface rounded-2xl p-6 gap-3"
+              className="bg-success/10 rounded-2xl p-6 gap-3 border border-success/20"
             >
               <Text className="text-base text-muted">Figurinhas Coletadas</Text>
               <Text className="text-4xl font-bold text-success">{stats.tenho}</Text>
@@ -99,7 +105,7 @@ export default function HomeScreen() {
               style={{
                 width: isDesktop ? "48%" : "100%",
               }}
-              className="bg-surface rounded-2xl p-6 gap-3"
+              className="bg-warning/10 rounded-2xl p-6 gap-3 border border-warning/20"
             >
               <Text className="text-base text-muted">Figurinhas Repetidas</Text>
               <Text className="text-4xl font-bold text-warning">{stats.repetidas}</Text>
@@ -110,7 +116,7 @@ export default function HomeScreen() {
               style={{
                 width: isDesktop ? "48%" : "100%",
               }}
-              className="bg-surface rounded-2xl p-6 gap-3"
+              className="bg-error/10 rounded-2xl p-6 gap-3 border border-error/20"
             >
               <Text className="text-base text-muted">Figurinhas Faltando</Text>
               <Text className="text-4xl font-bold text-error">{stats.faltam}</Text>
@@ -121,7 +127,7 @@ export default function HomeScreen() {
               style={{
                 width: isDesktop ? "48%" : "100%",
               }}
-              className="bg-surface rounded-2xl p-6 gap-3"
+              className="bg-surface rounded-2xl p-6 gap-3 border border-border"
             >
               <Text className="text-base text-muted">Total de Figurinhas</Text>
               <Text className="text-4xl font-bold text-foreground">{stats.total}</Text>
