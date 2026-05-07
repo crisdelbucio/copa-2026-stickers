@@ -79,3 +79,6 @@
 - [x] Mudar cor primária de azul para verde
 - [x] Atualizar tela de login com novo avatar
 - [x] Atualizar tela de perfil com novo avatar
+
+## Logotipo KIMANA
+- [x] Adicionar logotipo KIMANA abaixo do avatar na tela de login

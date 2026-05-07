@@ -29,10 +29,15 @@ export default function LoginScreen() {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="flex-1">
         <View className="flex-1 items-center justify-center px-6 gap-8">
           {/* Avatar */}
-          <View className="items-center">
+          <View className="items-center gap-4">
             <Image
               source={require("@/assets/images/avatar-clown.png")}
               style={{ width: 200, height: 200 }}
+              resizeMode="contain"
+            />
+            <Image
+              source={require("@/assets/images/logo-kimana.png")}
+              style={{ width: 200, height: 60 }}
               resizeMode="contain"
             />
           </View>
