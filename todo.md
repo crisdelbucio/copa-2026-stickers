@@ -89,3 +89,12 @@
 - [x] Melhorar responsividade para diferentes tamanhos de tela
 - [ ] Adicionar suporte a drag-and-drop para figurinhas
 - [ ] Testar em navegadores desktop
+
+## Deploy na Vercel
+- [x] Criar arquivo vercel.json com configurações
+- [x] Preparar variáveis de ambiente para Vercel
+- [x] Criar guia de deploy (DEPLOY_VERCEL.md)
+- [ ] Fazer push do código para GitHub
+- [ ] Conectar repositório à Vercel
+- [ ] Configurar domínio gratuito da Vercel
+- [ ] Testar site publicado
